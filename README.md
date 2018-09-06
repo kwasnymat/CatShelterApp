@@ -1,2 +1,2 @@
 # CatShelterApp
-App show cats to adopt
+App shows cats to adopt
