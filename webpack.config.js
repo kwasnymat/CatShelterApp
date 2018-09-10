@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-    entry: "./js/app.js",
+    entry: "./js/app.jsx",
     output: {
         filename: "out.js",
         path: path.resolve(__dirname, 'js')
@@ -11,7 +11,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
