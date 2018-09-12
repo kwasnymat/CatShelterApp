@@ -2,32 +2,48 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            filterText: "",
+            likesKids: false
+        }
+    }
+    handleTextChange = event => {
+        this.setState({
+            filterText: event.target.value,
+        });
+    }
+    handleCheckboxChange = event => {
+        this.setState({
+            likesKids: event.target.checked,
+        });
+    }
     render () {
+        const kitties = this.props.kitties.filter(cat => {
+
+            if (this.state.likesKids && !cat.likesKids){
+                return false;
+            } else if (this.state.filterText.length > 0 && cat.name.indexOf(this.state.filterText) === -1) {
+                return false;
+            }
+            return true;
+        });
         return (
             <div>
-                <SearchBar />
-                <CatTable kitties={this.props.kitties}/>
+                <SearchBar onTextChange={this.handleTextChange} onCheckboxChange={this.handleCheckboxChange} />
+                <CatTable kitties={kitties}/>
             </div>
         )
     }
 };
 
 class SearchBar extends React.Component {
-    constructor(props) {
-        super (props);
-        this.state = {
-            text: ""
-        };
-    }
-    handleNameChange = (event) => {
-        this.setState({text: event.target.value});
-    };
-
     render(){
         return (
             <form>
-                <input type="text" value={this.state.text} placeholder="Search..." onChange={this.handleNameChange} />
-                <p><input type="checkbox" /> Only show kitties that likes kids</p>
+                <input type="text" placeholder="Search by the name..." onChange={this.props.onTextChange} value= {this.props.filterText} />
+                <p><input type="checkbox" onChange={this.props.onCheckboxChange} /> Only show kitties that likes kids</p>
             </form>
         )
     };
@@ -37,6 +53,7 @@ class CatTable extends React.Component {
     render() {
         const rows = [];
         let lastCategory = null;
+
         this.props.kitties.forEach(kitty => {
 
             if (kitty.category !== lastCategory) {
@@ -45,7 +62,6 @@ class CatTable extends React.Component {
             rows.push(<CatRow kitty={kitty} key={kitty.name} />);
             lastCategory = kitty.category;
         });
-        console.log(rows);
         return (
             <table>
                 <thead>
