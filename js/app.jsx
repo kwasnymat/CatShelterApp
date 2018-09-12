@@ -20,6 +20,7 @@ class App extends React.Component {
         });
     }
     render () {
+
         const kitties = this.props.kitties.filter(cat => {
 
             if (this.state.likesKids && !cat.likesKids){
@@ -31,12 +32,23 @@ class App extends React.Component {
         });
         return (
             <div>
+                <Title />
                 <SearchBar onTextChange={this.handleTextChange} onCheckboxChange={this.handleCheckboxChange} />
                 <CatTable kitties={kitties}/>
             </div>
         )
     }
 };
+
+class Title extends React.Component {
+    render(){
+        return (
+            <div id="title">
+                <h1>CAT SHELTER APP</h1>
+            </div>
+        )
+    }
+}
 
 class SearchBar extends React.Component {
     render(){
@@ -91,7 +103,7 @@ class CatRow extends React.Component {
 class CatCategoryRow extends React.Component {
     render() {
         return (
-            <tr>
+            <tr className="sex">
                 <th colSpan="2">{this.props.category}</th>
             </tr>
         );
